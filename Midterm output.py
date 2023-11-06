@@ -1,10 +1,22 @@
 # Disclaimer: gubot pa kaayu, ako lang ihatag daan para maka sugod nata ug construct sa code.
 
 import random
+import time
+
+print("-------------------------------")
+print("-- Welcome to the MorseZone! --")
+print("-------------------------------\n")
+
 
 # Define Morse code patterns and their corresponding letters
-morse_codes = {"--.": 'a', "-.-": 'b', ".--": 'c'}
-morse_numbers = {"---": '1', ".-.": '2', "--": '3'}
+morse_codes = {".-": 'a', "-...": 'b', "-.-.": 'c', "-..": 'd', ".": 'e',
+               "..-.": 'f', "--.": 'g', "....": 'h',
+               "..": 'i', ".---": 'j', "-.-": 'k', ".-..": 'l', "--": 'm',
+               "-.": 'n', "---": 'o', ".--.": 'p',
+               "--.-": 'q', ".-.": 'r', "...": 's', "-": 't', "..-": 'u',
+               "...-": 'v', ".--": 'w', "-..-": 'x',
+               "-.--": 'y', "--..": 'z'}
+
 
 
 # Handle gamemode choice
@@ -35,7 +47,6 @@ def rerun():  # Handle rerun function
         rerun()
 
 
-
 # handle normal game mode with 5 questions
 def normal():
     score = 0
@@ -48,7 +59,7 @@ def normal():
         print(random_morse)
 
         # Get user input
-        user_input = input("Enter your guess (a, b, or c): ").lower()
+        user_input = input(">> ").lower()
 
         # Check if the user's input matches the correct answer
         correct_answer = morse_codes[random_morse]
@@ -70,27 +81,46 @@ def normal():
 
 # handle timed gamemode with timer
 def timed():
-    # Randomly select a Morse code pattern
-    random_morse = random.choice(list(morse_numbers.keys()))
+    # Initialize Score
+    score = 0
 
-    # Print a message to the user
-    print("\nGuess the number for the following Morse code:")
-    print(random_morse)
+    # Setting the time limit
+    game_duration = 60  # 1 minute playing time
 
-    # Get user input
-    user_input = input("Enter your guess (1, 2, or 3): ")
+    # Formula
+    start_time = time.time()
+    end_time = start_time + game_duration
 
-    # Check if the user's input matches the correct answer
-    correct_answer = morse_numbers[random_morse]
+    while time.time() < end_time:
+        # Calculates time
+        remaining_time = int(end_time - time.time())
 
-    if user_input == correct_answer:
-        print("⭐ Nice! You guessed it correctly! ⭐")
+        # Randomly select a Morse code pattern
+        random_morse = random.choice(list(morse_codes.keys()))
 
-    else:
-        print(f"Wrong. The correct answer is '{correct_answer}'.")
+        # Print a message to the user
+        print("\nRemaining time: {} seconds".format(remaining_time))
+        print("Guess the letter for the following Morse code:")
+        print("\t", random_morse)
+
+        # Get user input
+        user_input = input(">> ").lower()
+
+        # Check if the user's input matches the correct answer
+        correct_answer = morse_codes[random_morse]
+
+        if user_input == correct_answer:
+            print("⭐ Nice! You guessed it correctly! ⭐")
+            score += 1
+        else:
+            print(f"Wrong. The correct answer is '{correct_answer}'.")
+
+    # Displaying the score
+    print(f"Time's up! Your total score is {score}.")
 
     rerun()
 
-    return " "
+    return" "
+
 
 gameMode()
